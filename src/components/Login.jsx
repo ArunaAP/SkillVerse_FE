@@ -9,6 +9,9 @@ const Login = () => {
   const [error, setError] = useState(''); 
   const [loading, setLoading] = useState(false); 
 
+  console.log(username, password);
+  
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -53,7 +56,7 @@ const Login = () => {
     >
       {/* Left Section: LOGO */}
       <div className="flex flex-col justify-center items-center w-1/2 h-full text-white">
-        <span className="text-5xl font-bold">LOGO</span>
+        <div className="text-6xl font-bold text-black">Skill<span className="text-primary">Verse</span></div>
       </div>
 
       {/* Right Section: Login Form */}
@@ -71,12 +74,12 @@ const Login = () => {
           <form className="space-y-4" onSubmit={handleLogin}>
             {/* Email Address */}
             <div>
-              <label htmlFor="email" className="block text-sm text-gray-700">
+              <label htmlFor="username" className="block text-sm text-gray-700">
                 Email address
               </label>
               <input
-                type="email"
-                id="email"
+                type="text"
+                id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)} 
                 className="w-full mt-1 p-2 border rounded focus:outline-blue-500"
@@ -139,7 +142,7 @@ const Login = () => {
 
       {/* Footer */}
       <footer className="absolute bg-blue bottom-0 text-center w-full">
-        <p className="text-white text-sm">&copy; 2024. All rights reserved.</p>
+        <p className="text-white text-sm">&copy; 2024 SkillVerse. All rights reserved.</p>
       </footer>
     </div>
   );
