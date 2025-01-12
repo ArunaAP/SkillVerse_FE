@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
-export default function DesignCard({ designId ,image, title, designer, likes, createdAt }) {
-
+export default function DesignCard({ designId, image, title, designer, likes, createdAt }) {
   const navigate = useNavigate();
-  // Convert the createdAt time to a JavaScript Date object and calculate "time ago"
+  const [designerName, setDesignerName] = useState('Loading...');
+
   const timeAgo = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
 
-  const designerId = designer;
+  useEffect(() => {
+    const fetchDesignerName = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/users/${designer}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch designer data');
+        }
+        const data = await response.json();
+        setDesignerName(data.fullname || 'Unknown Designer');
+      } catch (error) {
+        console.error('Error fetching designer data:', error);
+        setDesignerName('Unknown Designer');
+      }
+    };
 
-  const handleDesignerClick = () => {
-    navigate(`/portfolio/${designerId}`);
+    if (designer) {
+      fetchDesignerName();
+    }
+  }, [designer]);
+
+  const handleDesignerClick = (event) => {
+    event.stopPropagation(); 
+    navigate(`/portfolio/${designer}`);
   };
 
   const handleCardClick = () => {
@@ -19,16 +38,10 @@ export default function DesignCard({ designId ,image, title, designer, likes, cr
   };
 
   return (
-    
-    <div className="bg-white  rounded-lg overflow-hidden cursor-pointer" onClick={handleCardClick}>
-      
+    <div className="bg-white rounded-lg overflow-hidden cursor-pointer" onClick={handleCardClick}>
       {/* Image Section */}
       <div className="relative w-full h-60">
-        <img
-          src={image}
-          alt={title}
-          className="object-cover w-full h-full"
-        />
+        <img src={image} alt={title} className="object-cover w-full h-full" />
       </div>
 
       {/* Bottom Section */}
@@ -39,7 +52,9 @@ export default function DesignCard({ designId ,image, title, designer, likes, cr
           <p
             className="text-gray-500 text-sm cursor-pointer hover:underline"
             onClick={handleDesignerClick}
-          >{designer}</p>
+          >
+            {designerName}
+          </p>
         </div>
 
         {/* Right Section: Likes and Time */}

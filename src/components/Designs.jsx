@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DesignCard from './DesignCard';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 const Designs = () => {
   const [designs, setDesigns] = useState([]); 
@@ -43,6 +44,7 @@ const Designs = () => {
           {designs.map((design) => (
             <DesignCard
               key={design._id}
+              designId={design._id}
               image={design.image}
               title={design.title}
               designer={design.designer} 
@@ -52,6 +54,7 @@ const Designs = () => {
           ))}
         </div>
       </section>
+      <Footer/>
     </div>
   );
 };

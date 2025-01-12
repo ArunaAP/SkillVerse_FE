@@ -10,7 +10,7 @@ const Hero = () => {
     <div className="absolute top-80 left-10 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue rounded-full opacity-70 z-0 blur-[90px]"></div>
     {/* <Navbar/> */}
       {/* Left Side (Text) */}
-      <div className="text-left max-w-lg z-10">
+      <div className="text-left max-w-lg z-20">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-black leading-tight mb-4">
           The World’s <br /> Best Creators <br /> Are On <span className="text-primary">SkillVerse</span>
         </h1>

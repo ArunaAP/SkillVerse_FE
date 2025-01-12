@@ -3,10 +3,12 @@ import Hero from './Hero';
 import BriefCard from './BriefCard';
 import DesignCard from './DesignCard';
 import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
 
 export default function Home() {
   const [briefs, setBriefs] = useState([]);
   const [designs, setDesigns] = useState([]);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +22,7 @@ export default function Home() {
       }
     };
 
+
     const fetchDesigns = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/design/');
@@ -29,6 +32,11 @@ export default function Home() {
         console.error('Failed to fetch designs:', error);
       }
     };
+
+   
+  
+
+
 
     fetchBriefs();
     fetchDesigns();
@@ -50,7 +58,7 @@ export default function Home() {
           <hr className="py-5" />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {briefs.slice(0, 3).map((brief) => (
-              <BriefCard key={brief._id} title={brief.title} description={brief.description} />
+              <BriefCard key={brief._id} briefId={brief._id} title={brief.title} description={brief.description} />
             ))}
           </div>
           {briefs.length > 3 && (
@@ -97,6 +105,7 @@ export default function Home() {
           )}
       </div>
     </section>
+    <Footer/>
     </div>
   );
 }
