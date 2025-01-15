@@ -66,7 +66,7 @@ const Login = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Sign in</h2>
           <p className="text-gray-600 mb-6">
             New user?{' '}
-            <a href="#create-account" className="text-blue hover:underline">
+            <a href="/register" className="text-blue hover:underline">
               Create an account
             </a>
           </p>

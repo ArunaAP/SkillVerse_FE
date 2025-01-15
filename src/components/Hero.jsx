@@ -6,8 +6,9 @@ import Navbar from './Navbar';
 const Hero = () => {
   return (
   
-    <section className="relative flex items-center justify-between  max-w-7xl z-20 mx-auto h-screen px-6 md:px-12">
-    <div className="absolute top-80 left-10 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue rounded-full opacity-70 z-0 blur-[90px]"></div>
+    <section className="relative flex items-center justify-between h-screen  max-w-7xl z-20 mx-auto  px-6 md:px-12">
+    <div className="absolute top-80 left-10 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue rounded-full opacity-50 z-0 blur-[90px]"></div>
+    <div className="absolute top-3/4 right-1 transform -translate-x-1/ -translate-y-1/3 w-[250px] h-[250px] bg-blue rounded-full opacity-70 z-0 blur-[100px]"></div>
     {/* <Navbar/> */}
       {/* Left Side (Text) */}
       <div className="text-left max-w-lg z-20">
@@ -20,7 +21,7 @@ const Hero = () => {
       </div>
 
       {/* Right Side (Image) */}
-      <div className="hidden lg:block max-w-md">
+      <div className="hidden lg:block max-w-md z-20">
         {/* Use the imported image */}
         <img
           src={HeroImage}

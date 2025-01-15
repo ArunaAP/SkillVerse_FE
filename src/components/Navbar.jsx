@@ -13,16 +13,19 @@ const Navbar = () => {
           const tokenPayload = JSON.parse(atob(token.split(".")[1]));
           return {
             fullname: tokenPayload?.fullname || null,
+            profileImage: tokenPayload?.profileImage || null,
             role: tokenPayload?.role || null,
           };
         } catch (error) {
           console.error("Error parsing token:", error);
-          return { fullname: null, role: null };
+          return { fullname: null, profileImage: null, role: null };
         }
       })()
-    : { fullname: null, role: null };
+    : { fullname: null, profileImage: null,  role: null };
 
-  const { fullname, role } = userData;
+  const { fullname, profileImage, role } = userData;
+
+  const profileImg = profileImage || "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
 
   const handleSignOut = (e) => {
     e.stopPropagation(); // Prevent dropdown from closing if clicked here
@@ -89,7 +92,7 @@ const Navbar = () => {
               {/* User Greeting */}
               <span className="text-black font-medium">Hello, {fullname}</span>
               <img
-                src="https://cdn-icons-png.flaticon.com/512/8847/8847419.png"
+                src={profileImg}
                 alt="User Avatar"
                 className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer"
                 onClick={handleDropdownToggle}
@@ -126,9 +129,11 @@ const Navbar = () => {
                   LOG IN
                 </button>
               </Link>
+              <Link to="/register">
               <button className="px-6 py-1 border border-blue text-blue rounded-full hover:bg-blue hover:text-white transition">
                 SIGN UP
               </button>
+              </Link>
             </>
           )}
         </div>

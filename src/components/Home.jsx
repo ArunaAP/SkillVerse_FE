@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Hero from './Hero';
+import Search from './Search';
 import BriefCard from './BriefCard';
 import DesignCard from './DesignCard';
 import { useNavigate } from 'react-router-dom';
@@ -52,6 +53,7 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <Search/>
       <section className="relative flex items-center justify-between max-w-7xl z-20 mx-auto md:px-12">
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">Try out the written briefs</h1>
