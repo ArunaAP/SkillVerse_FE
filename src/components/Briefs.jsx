@@ -31,9 +31,34 @@ const BriefsPage = () => {
   }, []);
 
   // Handle deletion of a brief
-  const handleDelete = (briefId) => {
-    setBriefs(briefs.filter((brief) => brief._id !== briefId)); // Remove the brief from the list
-  };
+const handleDelete = async (briefId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found. Please log in.");
+    }
+
+    const response = await fetch(`http://localhost:5000/api/brief/${briefId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete the brief.");
+    }
+
+    // Remove the deleted brief from the list
+    setBriefs((prevBriefs) => prevBriefs.filter((brief) => brief._id !== briefId));
+    console.log(`Brief with ID ${briefId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting brief:", error.message);
+    alert("Failed to delete the brief. Please try again.");
+  }
+};
+
 
   // Render loading, error, or briefs
   return (
