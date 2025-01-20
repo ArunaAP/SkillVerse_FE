@@ -7,7 +7,7 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatContainerRef = useRef(null);
-  const chatId = `${clientId}-${designerId}`;
+  const [chats, setChats] = useState([]);
 
   // Parse the token and extract the fullname and role
   const token = localStorage.getItem("token");
@@ -16,18 +16,35 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
         try {
           const tokenPayload = JSON.parse(atob(token.split(".")[1]));
           return {
-            fullname: tokenPayload?.fullname || null,
-            profileImage: tokenPayload?.profileImage || null,
+            id: tokenPayload?.id || null,
             role: tokenPayload?.role || null,
           };
         } catch (error) {
           console.error("Error parsing token:", error);
-          return { fullname: null, profileImage: null, role: null };
+          return { id: null, role: null };
         }
       })()
-    : { fullname: null, profileImage: null, role: null };
+    : { id: null, role: null };
 
-  const { fullname, profileImage, role } = userData;
+  const { id, role } = userData;
+
+  const chatId = `${clientId}-${designerId}`;
+
+  useEffect(() => {
+    // Fetch user's chat rooms
+    const fetchChats = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/chats/${id}`);
+        if (!response.ok) throw new Error("Failed to fetch chats");
+        const data = await response.json();
+        setChats(data);
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+
+    fetchChats();
+  }, [id]);
 
   // Fetch previous messages
   useEffect(() => {
@@ -81,6 +98,31 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 flex justify-center items-center">
+      <div className="w-1/3 bg-gray-100 p-4 h-screen overflow-y-auto">
+        <h2 className="text-lg font-bold mb-4">Chats</h2>
+        {chats.length === 0 ? (
+          <p>No chats available</p>
+        ) : (
+          chats.map((chat) => {
+            const participants = chat._id.split("-");
+            const otherUser = participants.find((id) => id !== id);
+
+            return (
+              <div
+                key={chat._id}
+                className="p-3 bg-white rounded-lg shadow-md mb-2 cursor-pointer"
+                onClick={() => setSelectedChat(chat)}
+              >
+                <p className="font-medium">Chat with {otherUser}</p>
+                <p className="text-gray-500 text-sm">
+                  {chat.lastMessage?.text || "No messages yet"}
+                </p>
+              </div>
+            );
+          })
+        )}
+      </div>
+
       <div className="fixed right-8 bottom-6 bg-white p-4 rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold">Chat with {designerName}</h3>

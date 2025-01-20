@@ -9,15 +9,33 @@ const ProfileSection = () => {
   const [designer, setDesigner] = useState(null);
   const [designs, setDesigns] = useState([]);
   const [showChatModal, setShowChatModal] = useState(false);
+  const [copySuccess, setCopySuccess] = useState("");
+
+  // Parse the token and extract the fullname and role
+  const token = localStorage.getItem("token");
+  const userData = token
+    ? (() => {
+        try {
+          const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+          return {
+            id: tokenPayload?.id || null,
+            role: tokenPayload?.role || null,
+          };
+        } catch (error) {
+          console.error("Error parsing token:", error);
+          return { id: null, role: null };
+        }
+      })()
+    : { id: null, role: null };
+
+  const { id, role } = userData;
 
   // Fetch designer data
   useEffect(() => {
     fetch(`http://localhost:5000/api/users/${designerId}`)
       .then((response) => response.json())
       .then((data) => setDesigner(data))
-      .catch((error) =>
-        console.error("Error fetching designer data:", error)
-      );
+      .catch((error) => console.error("Error fetching designer data:", error));
   }, [designerId]);
 
   // Fetch designs
@@ -36,6 +54,26 @@ const ProfileSection = () => {
   if (!designer) {
     return <div>Loading designer information...</div>;
   }
+
+  // Handle share button click
+  const handleShare = () => {
+    const shareURL = `${window.location.origin}/portfolio/${designerId}`;
+    navigator.clipboard
+      .writeText(shareURL)
+      .then(() => {
+        setCopySuccess("URL copied to clipboard!");
+        setTimeout(() => setCopySuccess(""), 2000); // Clear success message after 2 seconds
+      })
+      .catch((err) => {
+        console.error("Failed to copy URL: ", err);
+        setCopySuccess("Failed to copy URL.");
+      });
+  };
+
+  const totalLikes = designs.reduce(
+    (sum, design) => sum + (design.likes || 0),
+    0
+  );
 
   return (
     <div>
@@ -76,16 +114,24 @@ const ProfileSection = () => {
             <div className="flex gap-6 mt-6 md:mt-0 md:ml-auto">
               <div className="text-center">
                 <p className="text-gray-600">Likes</p>
-                <p className="text-1xl font-bold">{designer.likes || 0}</p>
+                <p className="text-1xl font-bold">{totalLikes}</p>
               </div>
+
               <div className="text-center">
                 <p className="text-gray-600">Designs</p>
                 <p className="text-1xl font-bold">{designs.length}</p>
               </div>
               <div className="text-center">
-                <button className="text-blue-600 hover:text-blue-700">
-                  <i className="fas fa-share"></i> Share
+                <button
+                  className="text-blue-600 hover:text-blue-700 flex flex-col items-center"
+                  onClick={handleShare}
+                >
+                  <span>Share</span> <i className="fas fa-share mb-1 p-1"></i>
+                  {/* Add margin-bottom for spacing */}
                 </button>
+                {copySuccess && (
+                  <p className="text-xs text-green-500 mt-1">{copySuccess}</p>
+                )}
               </div>
             </div>
           </div>
@@ -95,6 +141,7 @@ const ProfileSection = () => {
       <Footer />
       {showChatModal && (
         <ChatModal
+          clientId={id}
           designerId={designerId}
           designerName={designer.fullname}
           onClose={() => setShowChatModal(false)}
@@ -106,7 +153,11 @@ const ProfileSection = () => {
 
 const DesignsGrid = ({ designs }) => {
   if (designs.length === 0) {
-    return <p className="text-center mt-6">No designs available for this designer.</p>;
+    return (
+      <p className="text-center mt-6">
+        No designs available for this designer.
+      </p>
+    );
   }
 
   return (
