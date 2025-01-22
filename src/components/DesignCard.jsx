@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
-export default function DesignCard({ designId, image, title, designer, likes, createdAt }) {
+export default function DesignCard({
+  designId,
+  image,
+  title,
+  designer,
+  likes,
+  createdAt,
+}) {
   const navigate = useNavigate();
   const [designerName, setDesignerName] = useState("Loading...");
   const [designerImg, setDesignerImg] = useState("");
@@ -12,7 +19,9 @@ export default function DesignCard({ designId, image, title, designer, likes, cr
   useEffect(() => {
     const fetchDesignerName = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/users/${designer}`);
+        const response = await fetch(
+          `http://localhost:5000/api/users/${designer}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch designer data");
         }
@@ -48,14 +57,16 @@ export default function DesignCard({ designId, image, title, designer, likes, cr
       <div className="relative w-full h-60">
         <img src={image} alt={title} className="object-cover w-full h-full" />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-neutral-800 via-transparent to-transparent h-60 opacity-0 group-hover:opacity-80 transition-opacity">
-          <p className="text-white text-md font-bold absolute bottom-4 left-4">{title}</p>
+          <p className="text-white text-md font-bold absolute bottom-4 left-4">
+            {title}
+          </p>
         </div>
       </div>
 
       {/* Bottom Section */}
       <div className="py-3 flex justify-between items-center">
         {/* Left Section: Designer */}
-        <div className="flex items-center">
+        <div className="flex items-center px-2">
           <img
             src={designerImg}
             alt={designerName}
@@ -73,7 +84,7 @@ export default function DesignCard({ designId, image, title, designer, likes, cr
         </div>
 
         {/* Right Section: Likes and Time */}
-        <div className="flex flex-col items-end ml-auto space-y-2">
+        <div className="flex flex-col items-end ml-auto space-y-2 px-2">
           {/* Likes */}
           <div className="flex items-center space-x-1">
             <span className="text-gray-400 text-sm font-medium">{likes}</span>
@@ -86,7 +97,6 @@ export default function DesignCard({ designId, image, title, designer, likes, cr
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
           </div>
-          
         </div>
       </div>
     </div>

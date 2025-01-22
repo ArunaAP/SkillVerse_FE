@@ -16,7 +16,9 @@ const BriefPage = () => {
     // Fetch the brief data
     const fetchBrief = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/brief/${briefId}`);
+        const response = await fetch(
+          `http://localhost:5000/api/brief/${briefId}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch the brief.");
         }
@@ -41,7 +43,9 @@ const BriefPage = () => {
           throw new Error("Failed to fetch designs.");
         }
         const data = await response.json();
-        const filteredDesigns = data.filter((design) => design.brief === briefId);
+        const filteredDesigns = data.filter(
+          (design) => design.brief === briefId
+        );
         setDesigns(filteredDesigns);
       } catch (err) {
         console.error("Error fetching designs:", err.message);
@@ -73,7 +77,9 @@ const BriefPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="col-span-2 pr-20 pl-8">
               <h2 className="text-lg font-bold mb-2">Brief</h2>
-              <p className="text-gray-800 leading-relaxed">{brief.description}</p>
+              <p className="text-gray-800 leading-relaxed">
+                {brief.description}
+              </p>
             </div>
             <div className="bg-gray-50 p-4 rounded-md shadow-md">
               <h2 className="text-lg font-bold mb-2">Deliverables</h2>
@@ -88,7 +94,9 @@ const BriefPage = () => {
             </div>
           </div>
           <div className="mt-20">
-            <h3 className="text-xl font-bold mt-4 py-5">Recent Work by Other Users</h3>
+            <h3 className="text-xl font-bold mt-4 py-5">
+              Recent Work by Other Users
+            </h3>
             <hr className="py-5" />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {designs.length > 0 ? (

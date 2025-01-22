@@ -22,7 +22,9 @@ export default function BriefCard({ briefId, title, description, onDelete }) {
 
   // Truncate description to a maximum of 150 characters
   const truncateText = (text, maxLength) => {
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
   };
 
   const handleCardClick = () => {
@@ -30,7 +32,10 @@ export default function BriefCard({ briefId, title, description, onDelete }) {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 relative flex flex-col overflow-hidden" style={{ height: "200px" }}>
+    <div
+      className="bg-white bg-opacity-40 shadow-sm rounded-lg p-4 relative flex flex-col overflow-hidden"
+      style={{ height: "200px" }}
+    >
       {/* Title and Badges */}
       <div className="mb-2">
         <h2 className="text-lg font-semibold">{title}</h2>
@@ -45,35 +50,33 @@ export default function BriefCard({ briefId, title, description, onDelete }) {
         <p className="text-sm text-gray-600">
           {truncateText(description, 150)}
         </p>
-        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent"></div>
       </div>
 
       {/* Footer Section */}
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-end px-4 py-2 bg-white">
-  <button
-    className="text-gray-500 text-sm font-medium hover:underline"
-    onClick={handleCardClick}
-  >
-    Read full brief →
-  </button>
-  {role === "Admin" && (
-    <div className="flex items-center gap-2 ml-4">
-      <button
-        className="text-red-500 hover:text-red-700"
-        onClick={() => onDelete(briefId)}
-      >
-        <i className="fa-solid fa-trash"></i>
-      </button>
-      <button
-        className="text-blue-500 hover:text-blue-700"
-        onClick={() => navigate(`/update-brief/${briefId}`)}
-      >
-        <i className="fa-solid fa-pen"></i>
-      </button>
-    </div>
-  )}
-</div>
-
+      <div className="absolute inset-x-0 bottom-0 flex items-center justify-end px-4 py-2 ">
+        <button
+          className="text-gray-500 text-sm font-medium hover:underline"
+          onClick={handleCardClick}
+        >
+          Read full brief →
+        </button>
+        {role === "Admin" && (
+          <div className="flex items-center gap-2 ml-4">
+            <button
+              className="text-red-500 hover:text-red-700"
+              onClick={() => onDelete(briefId)}
+            >
+              <i className="fa-solid fa-trash"></i>
+            </button>
+            <button
+              className="text-blue-500 hover:text-blue-700"
+              onClick={() => navigate(`/update-brief/${briefId}`)}
+            >
+              <i className="fa-solid fa-pen"></i>
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
