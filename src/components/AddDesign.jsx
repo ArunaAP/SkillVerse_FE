@@ -173,14 +173,14 @@ const AddDesignForm = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              rows="5"
+              rows="7"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
-              className={`py-2 px-4 text-white bg-blue-600 rounded-full focus:outline-none hover:bg-blue-700 ${
+              className={`py-2 px-4 text-white bg-blue rounded-full focus:outline-none hover:bg-blue-700 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={loading}

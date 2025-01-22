@@ -21,11 +21,12 @@ const Navbar = () => {
           return { fullname: null, profileImage: null, role: null };
         }
       })()
-    : { fullname: null, profileImage: null,  role: null };
+    : { fullname: null, profileImage: null, role: null };
 
   const { fullname, profileImage, role } = userData;
 
-  const profileImg = profileImage || "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
+  const profileImg =
+    profileImage || "https://cdn-icons-png.flaticon.com/512/8847/8847419.png";
 
   const handleSignOut = (e) => {
     e.stopPropagation(); // Prevent dropdown from closing if clicked here
@@ -79,7 +80,10 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/community" className="cursor-pointer hover:text-gray-500">
+            <Link
+              to="/community"
+              className="cursor-pointer hover:text-gray-500"
+            >
               Community
             </Link>
           </li>
@@ -94,7 +98,7 @@ const Navbar = () => {
               <img
                 src={profileImg}
                 alt="User Avatar"
-                className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer"
+                className="w-8 h-8 rounded-full border-2 border-gray-300 cursor-pointer"
                 onClick={handleDropdownToggle}
               />
 
@@ -130,9 +134,9 @@ const Navbar = () => {
                 </button>
               </Link>
               <Link to="/register">
-              <button className="px-6 py-1 border border-blue text-blue rounded-full hover:bg-blue hover:text-white transition">
-                SIGN UP
-              </button>
+                <button className="px-6 py-1 border border-blue text-blue rounded-full hover:bg-blue hover:text-white transition">
+                  SIGN UP
+                </button>
               </Link>
             </>
           )}

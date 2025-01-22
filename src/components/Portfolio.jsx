@@ -168,6 +168,7 @@ const DesignsGrid = ({ designs }) => {
         {designs.map((design) => (
           <DesignCard
             key={design._id}
+            designId={design._id}
             image={design.image}
             title={design.title}
             designer={design.designer}
