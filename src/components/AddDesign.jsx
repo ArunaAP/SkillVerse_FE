@@ -6,6 +6,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { auto } from "@cloudinary/url-gen/actions/resize";
 import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
 import { AdvancedImage } from "@cloudinary/react";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const AddDesignForm = () => {
   const { briefId } = useParams();
@@ -86,7 +87,7 @@ const AddDesignForm = () => {
       };
 
       // Send the data to your backend
-      const response = await fetch("http://localhost:5000/api/design/", {
+      const response = await fetch(`${apiUrl}/api/design/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

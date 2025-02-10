@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const CreateThread = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -21,7 +23,7 @@ const CreateThread = () => {
       }
 
       const tagsArray = tags.split(",").map((tag) => tag.trim()); // Convert string to array
-      const response = await fetch("http://localhost:5000/api/threads", {
+      const response = await fetch(`${apiUrl}/api/threads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +47,7 @@ const CreateThread = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Create New Thread</h1>
+      <h1 className="text-2xl font-bold mb-6">Create New Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-gray-700 font-medium mb-2">Title</label>

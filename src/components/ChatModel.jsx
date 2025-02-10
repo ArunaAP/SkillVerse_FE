@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:5000");
+const apiUrl = import.meta.env.VITE_API_URL;
+const socket = io.connect(`${apiUrl}`, { withCredentials: true });
 
 const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
   const [messages, setMessages] = useState([]);
@@ -34,10 +35,16 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
     // Fetch user's chat rooms
     const fetchChats = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/chats/${id}`);
+        const response = await fetch(`${apiUrl}/api/chats/${id}`);
         if (!response.ok) throw new Error("Failed to fetch chats");
         const data = await response.json();
         setChats(data);
+
+        // Access each chat ID
+        data.chats.forEach((chat) => {
+          console.log("Chat ID:", chat._id); // Access the _id (chatId)
+          console.log("Last Message:", chat.lastMessage.text);
+        });
       } catch (error) {
         console.error("Error fetching chats:", error);
       }

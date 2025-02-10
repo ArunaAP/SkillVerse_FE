@@ -1,6 +1,6 @@
 import React from "react";
 // Import the image from the assets folder
-import HeroImage from "../assets/image 2.png"; // Update the path as per your folder structure
+import HeroImage from "../assets/image-2.png"; // Update the path as per your folder structure
 import Navbar from "./Navbar";
 
 const Hero = () => {
@@ -23,12 +23,12 @@ const Hero = () => {
       </div>
 
       {/* Right Side (Image) */}
-      <div className="hidden lg:block max-w-md z-20">
+      <div className="lg:block z-20">
         {/* Use the imported image */}
         <img
           src={HeroImage}
           alt="Hero"
-          className="w-[500px] h-[500px] object-cover rounded-lg "
+          className="w-[500px] h-[500px] object-cover"
         />
       </div>
     </section>
