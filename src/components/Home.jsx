@@ -45,10 +45,26 @@ export default function Home() {
     navigate("/designs");
   };
 
+  const handleSearch = async (query) => {
+    try {
+      const designRes = await fetch(`${apiUrl}/api/design/search?q=${query}`);
+      const briefRes = await fetch(`${apiUrl}/api/brief/search?q=${query}`);
+
+      const designData = await designRes.json();
+      const briefData = await briefRes.json();
+
+      navigate("/results", {
+        state: { designResults: designData, briefResults: briefData },
+      });
+    } catch (error) {
+      console.error("Search failed:", error);
+    }
+  };
+
   return (
     <div>
       <Hero />
-      <Search />
+      <Search onSearch={handleSearch} />
       <section className="relative flex items-center justify-between max-w-7xl z-20 mx-auto md:px-12">
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">
