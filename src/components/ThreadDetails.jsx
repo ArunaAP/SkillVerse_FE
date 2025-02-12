@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const ThreadDetails = () => {
   const { id } = useParams();
   const [thread, setThread] = useState(null);
@@ -12,7 +14,7 @@ const ThreadDetails = () => {
   useEffect(() => {
     const fetchThread = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/threads/${id}`);
+        const response = await fetch(`${apiUrl}/api/threads/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch thread details");
         }
@@ -27,9 +29,7 @@ const ThreadDetails = () => {
 
     const fetchComments = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/comments/${id}`
-        );
+        const response = await fetch(`${apiUrl}/api/comments/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch comments");
         }
@@ -51,7 +51,7 @@ const ThreadDetails = () => {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await fetch(`http://localhost:5000/api/comments/${id}`, {
+      const response = await fetch(`${apiUrl}/api/comments/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

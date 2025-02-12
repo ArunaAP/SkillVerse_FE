@@ -6,6 +6,8 @@ import DesignCard from "./DesignCard";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function Home() {
   const [briefs, setBriefs] = useState([]);
   const [designs, setDesigns] = useState([]);
@@ -15,17 +17,16 @@ export default function Home() {
   useEffect(() => {
     const fetchBriefs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/brief/");
+        const response = await fetch(`${apiUrl}/api/brief/`);
         const data = await response.json();
         setBriefs(data);
       } catch (error) {
         console.error("Failed to fetch briefs:", error);
       }
     };
-
     const fetchDesigns = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/design/");
+        const response = await fetch(`${apiUrl}/api/design/`);
         const data = await response.json();
         setDesigns(data);
       } catch (error) {
@@ -44,10 +45,26 @@ export default function Home() {
     navigate("/designs");
   };
 
+  const handleSearch = async (query) => {
+    try {
+      const designRes = await fetch(`${apiUrl}/api/design/search?q=${query}`);
+      const briefRes = await fetch(`${apiUrl}/api/brief/search?q=${query}`);
+
+      const designData = await designRes.json();
+      const briefData = await briefRes.json();
+
+      navigate("/results", {
+        state: { designResults: designData, briefResults: briefData },
+      });
+    } catch (error) {
+      console.error("Search failed:", error);
+    }
+  };
+
   return (
     <div>
       <Hero />
-      <Search />
+      <Search onSearch={handleSearch} />
       <section className="relative flex items-center justify-between max-w-7xl z-20 mx-auto md:px-12">
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">

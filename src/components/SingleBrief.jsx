@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "./Footer";
 import DesignCard from "./DesignCard";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const BriefPage = () => {
   const navigate = useNavigate();
@@ -16,9 +17,7 @@ const BriefPage = () => {
     // Fetch the brief data
     const fetchBrief = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/brief/${briefId}`
-        );
+        const response = await fetch(`${apiUrl}/api/brief/${briefId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch the brief.");
         }
@@ -38,7 +37,7 @@ const BriefPage = () => {
     // Fetch all designs and filter by briefId
     const fetchDesigns = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/design/`);
+        const response = await fetch(`${apiUrl}/api/design/`);
         if (!response.ok) {
           throw new Error("Failed to fetch designs.");
         }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BriefCard from "./BriefCard";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const BriefsPage = () => {
   const [briefs, setBriefs] = useState([]);
@@ -12,7 +13,7 @@ const BriefsPage = () => {
   useEffect(() => {
     const fetchBriefs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/brief");
+        const response = await fetch(`${apiUrl}/api/brief`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -38,16 +39,13 @@ const BriefsPage = () => {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await fetch(
-        `http://localhost:5000/api/brief/${briefId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/brief/${briefId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete the brief.");

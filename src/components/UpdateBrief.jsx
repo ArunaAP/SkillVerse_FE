@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import BriefForm from "./BriefForm";
 import BriefCard from "./BriefCard";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const UpdateBrief = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,7 +17,7 @@ const UpdateBrief = () => {
   useEffect(() => {
     const fetchRecentBriefs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/brief/recent");
+        const response = await fetch(`${apiUrl}/api/brief/recent`);
         if (!response.ok) {
           throw new Error("Failed to fetch recent briefs");
         }
@@ -32,9 +34,7 @@ const UpdateBrief = () => {
   useEffect(() => {
     const fetchBrief = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/brief/${briefId}`
-        );
+        const response = await fetch(`${apiUrl}/api/brief/${briefId}`);
         const data = await response.json();
         setBrief(data);
       } catch (err) {
@@ -56,17 +56,14 @@ const UpdateBrief = () => {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await fetch(
-        `http://localhost:5000/api/brief/${briefId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/brief/${briefId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         throw new Error(`Failed to update brief: ${response.statusText}`);
@@ -91,16 +88,13 @@ const UpdateBrief = () => {
         throw new Error("No token found. Please log in.");
       }
 
-      const response = await fetch(
-        `http://localhost:5000/api/brief/${briefId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/brief/${briefId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete the brief.");

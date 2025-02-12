@@ -48,11 +48,33 @@ const Main = () => {
   // Monitor token and redirect on expiration
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token || isTokenExpired(token)) {
+
+    // Check if the current route is protected
+    const protectedRoutes = [
+      "/briefs",
+      "/designs",
+      "/portfolio/:designerId",
+      "/design/:designId",
+      "/brief/:briefId",
+      "/add-brief",
+      "/update-brief/:briefId",
+      "/add-design/:briefId",
+      "/results",
+      "/community",
+      "/threads/:id",
+      "/create-thread",
+    ];
+
+    // If the user is on a protected route and the token is invalid, redirect to login
+    const isProtectedRoute = protectedRoutes.some(
+      (route) => location.pathname.startsWith(route.replace(/:\w+/g, "")) // Handle dynamic params
+    );
+
+    if ((!token || isTokenExpired(token)) && isProtectedRoute) {
       localStorage.removeItem("token");
       navigate("/login");
     }
-  }, [navigate]);
+  }, [location, navigate]);
 
   // Set dynamic title based on the current route
   useEffect(() => {
@@ -101,7 +123,7 @@ const Main = () => {
 
   return (
     <div className="relative w-full min-h-screen">
-      {location.pathname !== "/login" && location.pathname !== "/signup" && (
+      {location.pathname !== "/login" && location.pathname !== "/register" && (
         <Navbar />
       )}
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function DesignCard({
   designId,
   image,
@@ -19,9 +21,7 @@ export default function DesignCard({
   useEffect(() => {
     const fetchDesignerName = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/users/${designer}`
-        );
+        const response = await fetch(`${apiUrl}/api/users/${designer}`);
         if (!response.ok) {
           throw new Error("Failed to fetch designer data");
         }

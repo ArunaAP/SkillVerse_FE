@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import DesignCard from './DesignCard';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import React, { useState, useEffect } from "react";
+import DesignCard from "./DesignCard";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Designs = () => {
-  const [designs, setDesigns] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(''); 
+  const [designs, setDesigns] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   // Fetch designs from the backend
   useEffect(() => {
     const fetchDesigns = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/design'); 
+        const response = await fetch(`${apiUrl}/api/design`);
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch designs');
+          throw new Error(data.message || "Failed to fetch designs");
         }
 
-        setDesigns(data); 
+        setDesigns(data);
       } catch (err) {
-        setError(err.message); 
+        setError(err.message);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -47,14 +48,14 @@ const Designs = () => {
               designId={design._id}
               image={design.image}
               title={design.title}
-              designer={design.designer} 
+              designer={design.designer}
               likes={design.likes}
               createdAt={design.createdAt}
             />
           ))}
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

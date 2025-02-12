@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import CustomAlert from "./CustomAlert"; // Import the CustomAlert component
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const ThreadsList = () => {
   const [threads, setThreads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ const ThreadsList = () => {
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/threads");
+        const response = await fetch(`${apiUrl}/api/threads`);
         if (!response.ok) {
           throw new Error("Failed to fetch threads");
         }
@@ -54,7 +56,7 @@ const ThreadsList = () => {
 
   const handleDeleteThread = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/threads/${id}`, {
+      const response = await fetch(`${apiUrl}/api/threads/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -73,11 +75,11 @@ const ThreadsList = () => {
 
       // Close alert and notify success
       setAlert({ isOpen: false, threadId: null, message: "" });
-      alert("Thread deleted successfully.");
+      alert("Post deleted successfully.");
     } catch (error) {
-      console.error("Error deleting thread:", error);
+      console.error("Error deleting Post:", error);
       setAlert({ isOpen: false, threadId: null, message: "" });
-      alert("Error deleting the thread. Please try again.");
+      alert("Error deleting the Post. Please try again.");
     }
   };
 
@@ -85,7 +87,7 @@ const ThreadsList = () => {
     setAlert({
       isOpen: true,
       threadId: id,
-      message: "Are you sure you want to delete this thread?",
+      message: "Are you sure you want to delete this Post?",
     });
   };
 
@@ -165,7 +167,7 @@ const ThreadsList = () => {
       </div>
       <CustomAlert
         isOpen={alert.isOpen}
-        title="Delete Thread"
+        title="Delete Post"
         message={alert.message}
         onConfirm={() => handleDeleteThread(alert.threadId)}
         onCancel={() =>

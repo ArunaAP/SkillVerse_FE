@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import DesignCard from "./DesignCard";
 import Footer from "./Footer";
 import ChatModal from "./ChatModel";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const ProfileSection = () => {
   const { designerId } = useParams();
@@ -32,7 +33,7 @@ const ProfileSection = () => {
 
   // Fetch designer data
   useEffect(() => {
-    fetch(`http://localhost:5000/api/users/${designerId}`)
+    fetch(`${apiUrl}/api/users/${designerId}`)
       .then((response) => response.json())
       .then((data) => setDesigner(data))
       .catch((error) => console.error("Error fetching designer data:", error));
@@ -40,7 +41,7 @@ const ProfileSection = () => {
 
   // Fetch designs
   useEffect(() => {
-    fetch("http://localhost:5000/api/design/")
+    fetch(`${apiUrl}/api/design/`)
       .then((response) => response.json())
       .then((data) => {
         const filteredDesigns = data.filter(

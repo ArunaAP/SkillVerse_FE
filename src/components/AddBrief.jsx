@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import BriefForm from "./BriefForm";
 import BriefCard from "./BriefCard";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const AddBrief = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -13,7 +15,7 @@ const AddBrief = () => {
   useEffect(() => {
     const fetchRecentBriefs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/brief/recent");
+        const response = await fetch(`${apiUrl}/api/brief/recent`);
         if (!response.ok) {
           throw new Error("Failed to fetch recent briefs");
         }

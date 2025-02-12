@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:5000");
+const apiUrl = import.meta.env.VITE_API_URL;
+const socket = io.connect(`${apiUrl}`, { withCredentials: true });
 
 const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatContainerRef = useRef(null);
   const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState([]);
 
   // Parse the token and extract the fullname and role
   const token = localStorage.getItem("token");
@@ -34,10 +36,16 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
     // Fetch user's chat rooms
     const fetchChats = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/chats/${id}`);
+        const response = await fetch(`${apiUrl}/api/chats/${id}`);
         if (!response.ok) throw new Error("Failed to fetch chats");
         const data = await response.json();
         setChats(data);
+
+        // Access each chat ID
+        data.chats.forEach((chat) => {
+          console.log("Chat ID:", chat._id); // Access the _id (chatId)
+          console.log("Last Message:", chat.lastMessage.text);
+        });
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
@@ -95,6 +103,8 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
     // Clear the input field
     setNewMessage("");
   };
+
+  console.log("Selected chat", selectedChat._id);
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 flex justify-center items-center">
