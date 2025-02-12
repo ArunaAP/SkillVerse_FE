@@ -9,6 +9,7 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
   const [newMessage, setNewMessage] = useState("");
   const chatContainerRef = useRef(null);
   const [chats, setChats] = useState([]);
+  const [selectedChat, setSelectedChat] = useState([]);
 
   // Parse the token and extract the fullname and role
   const token = localStorage.getItem("token");
@@ -102,6 +103,8 @@ const ChatModal = ({ clientId, designerId, designerName, onClose }) => {
     // Clear the input field
     setNewMessage("");
   };
+
+  console.log("Selected chat", selectedChat._id);
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 flex justify-center items-center">
