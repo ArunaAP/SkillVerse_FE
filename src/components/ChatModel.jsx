@@ -4,7 +4,7 @@ import io from "socket.io-client";
 const apiUrl = import.meta.env.VITE_API_URL;
 const socket = io.connect(`${apiUrl}`, { withCredentials: true });
 
-const ChatModal = ({ onClose }) => {
+const ChatModal = ({ designerId, onClose }) => {
   const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -107,11 +107,58 @@ const ChatModal = ({ onClose }) => {
     setNewMessage("");
   };
 
+  const handleNewChat = async () => {
+    console.log("designer id", designerId);
+    console.log(" id", id);
+
+    if (!designerId) return;
+
+    try {
+      // Check if a chat already exists
+      const response = await fetch(
+        `${apiUrl}/api/chats/check/${id}/${designerId}`
+      );
+      if (!response.ok) throw new Error("Failed to check existing chat");
+
+      const { chatExists, existingChat } = await response.json();
+
+      if (chatExists) {
+        // If chat exists, open it
+        setSelectedChat(existingChat);
+      } else {
+        // If chat does not exist, create a new chat
+        // Join the chat room
+        const chatId = `${id}-${designerId}`;
+        socket.emit("joinChatRoom", { chatId });
+
+        if (!createResponse.ok) throw new Error("Failed to create chat");
+
+        const newChat = await createResponse.json();
+
+        setChats((prevChats) => [newChat, ...prevChats]); // Add new chat to state
+        setSelectedChat(newChat); // Open the new chat
+      }
+    } catch (error) {
+      console.error("Error handling new chat:", error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 flex justify-center items-center">
       <div className="w-3/4 h-screen flex bg-gray-100 rounded-lg shadow-lg overflow-hidden">
         {/* Chats List (Left Side) */}
         <div className="w-1/3 bg-gray-200 p-4 overflow-y-auto">
+          <button onClick={onClose} className="text-gray-500 px-1">
+            <i className="fa-solid fa-circle-xmark"></i>
+          </button>
+
+          {/* <button
+            onClick={() => handleNewChat()}
+            className="bg-blue text-white px-3 py-1 rounded text-sm"
+          >
+            New Chat
+          </button> */}
+
           <h2 className="text-lg font-bold mb-4">Chats</h2>
           {chats.length === 0 ? (
             <p>No chats available</p>
@@ -148,9 +195,6 @@ const ChatModal = ({ onClose }) => {
                 <h3 className="font-bold">
                   Chat with {selectedChat._id.replace(id, "").replace("-", "")}
                 </h3>
-                <button onClick={onClose} className="text-gray-500 px-1">
-                  <i className="fa-solid fa-circle-xmark"></i>
-                </button>
               </div>
               <div
                 ref={chatContainerRef}
