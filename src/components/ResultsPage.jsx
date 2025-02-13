@@ -43,14 +43,14 @@ const ResultsPage = () => {
 
   return (
     <div>
-      <Search />
+      {/* <Search /> */}
       <section className="relative flex items-center justify-between max-w-7xl z-20 mx-auto md:px-12">
         <div className="flex space-x-6 max-w-7xl mx-auto ">
-          {/* Left sidebar for filters */}
+          {/* Left sidebar for filters
           <div className="w-1/4 bg-gray-100 p-4  rounded-lg">
             <h3 className="font-semibold text-lg">Filters</h3>
 
-            {/* Filter by Title */}
+            
             <input
               type="text"
               placeholder="Search by Title"
@@ -60,7 +60,7 @@ const ResultsPage = () => {
               className="mt-2 p-2 w-full border border-gray-300 rounded-md"
             />
 
-            {/* Filter by Designer */}
+        
             <input
               type="text"
               placeholder="Search by Designer"
@@ -70,7 +70,7 @@ const ResultsPage = () => {
               className="mt-2 p-2 w-full border border-gray-300 rounded-md"
             />
 
-            {/* Filter by Date */}
+            
             <input
               type="text"
               placeholder="Search by Date (YYYY-MM-DD)"
@@ -79,10 +79,11 @@ const ResultsPage = () => {
               onChange={handleFilterChange}
               className="mt-2 p-2 w-full border border-gray-300 rounded-md"
             />
-          </div>
+          </div> */}
 
           {/* Right side displaying the results */}
           <div className="w-3/4 space-y-8">
+            <h2 className="text-xl font-bold mb-5 mt-10">Search Results</h2>
             {/* Design Results */}
             <div>
               <h2 className="text-xl font-semibold mb-5">Designs</h2>
